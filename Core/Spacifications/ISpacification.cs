@@ -15,5 +15,7 @@ namespace Core.Spacifications
         // دى عشان لو فى انكلود ولا حاجه اعرف ارجعه حاجه زى النفجيشن بروبرتى 
         List<Expression<Func<T, object>>> Includes { get; } 
 
+        Expression<Func<T, object>> OrderBy { get; }
+        Expression<Func<T, object>> OrderByDescending { get; }
     }
 }

@@ -3,6 +3,7 @@ using Core.Entities;
 using Ecommerce.DTO;
 namespace Ecommerce.Helper
 {
+    // to return picture name with Domain
     public class ProductUrlResolver : IValueResolver<Product, ProductDto, string>
     {
         private readonly IConfiguration _config;

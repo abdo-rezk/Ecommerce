@@ -16,6 +16,10 @@ namespace Infrastrucure.Data
             var query = inputQuery;
             if (spac.Criteria != null)
                 query = query.Where(spac.Criteria);
+            if (spac.OrderBy != null)
+                query = query.OrderBy(spac.OrderBy);
+            if (spac.OrderByDescending != null)
+                query = query.OrderByDescending(spac.OrderByDescending);
             query = spac.Includes.Aggregate(query, (current, include) => current.Include(include));
             return query;
         }

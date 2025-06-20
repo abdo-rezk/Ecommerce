@@ -33,9 +33,9 @@ namespace Ecommerce.Controllers
             _mapper = mapper;   
         }
         [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts(string sort)
         {
-            ProductWithTypesAndBrandsSpacification spac = new ProductWithTypesAndBrandsSpacification();
+            ProductWithTypesAndBrandsSpacification spac = new ProductWithTypesAndBrandsSpacification(sort);
 
             var pro = await _productRepo.ListAsync(spac);
             // var products = await _productRepo.GetAllAsync();
