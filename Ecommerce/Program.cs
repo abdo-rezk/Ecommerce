@@ -25,6 +25,19 @@ namespace Ecommerce
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            // ⁄‘«‰  ”„Õ ·Õ«ÃÂ ÊÕœÂ »”  «ﬂ”” «· API
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyHeader()
+                          .AllowAnyMethod()
+                          .WithOrigins("https://localhost:4200")  //  «··Ì‰ﬂ œ« «··Ï «·«‰ÃÊ·«— »Ì—‰ ⁄·ÌÂ 
+                          .AllowCredentials();
+                });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -36,6 +49,7 @@ namespace Ecommerce
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 

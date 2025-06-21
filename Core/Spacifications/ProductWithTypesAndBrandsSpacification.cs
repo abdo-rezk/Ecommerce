@@ -9,14 +9,19 @@ namespace Core.Spacifications
 {
     public class ProductWithTypesAndBrandsSpacification : BaseSpacification<Product>
     {
-        public ProductWithTypesAndBrandsSpacification(string sort)
+        // PrandId && TypeId && Search given to base constractor BaseSpacification to filter products by brand and type by Criteria
+        public ProductWithTypesAndBrandsSpacification(ProductSpecParams productParams) :base(x =>
+            (string.IsNullOrEmpty(productParams.Search) || x.Name.ToLower().Contains(productParams.Search.Trim())) &&
+            (!productParams.BrandId.HasValue || x.ProductBrandId == productParams.BrandId) &&
+            (!productParams.TypeId.HasValue || x.ProductTypeId == productParams.TypeId))
         {
             AddInclude(x => x.ProductType);
             AddInclude(x => x.ProductBrand);
             ApplyOrderBy(x => x.Name);
-            if (!string.IsNullOrEmpty(sort))
+            ApplyPaging(productParams.PageSize *(productParams.PageIndex - 1), productParams.PageSize);
+            if (!string.IsNullOrEmpty(productParams.Sort))
             {
-                switch (sort)
+                switch (productParams.Sort)
                 {
                     case "priceAsc":
                         ApplyOrderBy(x => x.Price);

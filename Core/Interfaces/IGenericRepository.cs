@@ -15,11 +15,13 @@ namespace Core.Interfaces
 
 
         // بعمل ال specification  عشان لما بيبقى فيه  include  in generic repository  مكنش بيفهم يدخل جوا ازاى 
-       
+
         //Get one entity with spec
         Task<T> GetEntityWithSpec(ISpacification<T> spac);
         //
         //Get all entities with spec
         Task<IReadOnlyList<T>> ListAsync(ISpacification<T> spac);
+
+        Task<int> CountAsync(ISpacification<T> spac);
     }
 }

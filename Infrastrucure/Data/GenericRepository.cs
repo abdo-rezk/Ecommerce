@@ -21,6 +21,7 @@ namespace Infrastrucure.Data
         {
             return await _context.Set<T>().FindAsync(id);
         }
+
         public async Task<IReadOnlyCollection<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
@@ -30,11 +31,17 @@ namespace Infrastrucure.Data
         {
             return await ApplySpecification(spac).FirstOrDefaultAsync();
         }
+
         public async Task<IReadOnlyList<T>> ListAsync(ISpacification<T> spac)
         {
             return await ApplySpecification(spac).ToListAsync();
         }
 
+        public async Task<int> CountAsync(ISpacification<T> spac)
+        {
+            return await ApplySpecification(spac).CountAsync();
+        }
+         
         // this method is used to apply the specification to the query
         private IQueryable<T> ApplySpecification(ISpacification<T> spac)
         {

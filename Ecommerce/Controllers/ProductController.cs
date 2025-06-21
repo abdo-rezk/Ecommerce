@@ -3,6 +3,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Core.Spacifications;
 using Ecommerce.DTO;
+using Ecommerce.Helper;
 using Infrastrucure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,12 +33,14 @@ namespace Ecommerce.Controllers
             _productRepo = productRepo;
             _mapper = mapper;   
         }
-        [HttpGet]
-        public async Task<IActionResult> GetProducts(string sort)
+        [HttpGet]  //FromQuery becouse it get method not FromBody
+        public async Task<IActionResult> GetProducts([FromQuery] ProductSpecParams productParams)
         {
-            ProductWithTypesAndBrandsSpacification spac = new ProductWithTypesAndBrandsSpacification(sort);
+            ProductWithTypesAndBrandsSpacification spac = new ProductWithTypesAndBrandsSpacification(productParams);
+            ProductWithFiltersForCountSpacification countSpec = new ProductWithFiltersForCountSpacification(productParams);
 
             var pro = await _productRepo.ListAsync(spac);
+            var totalItems = await _productRepo.CountAsync(countSpec);
             // var products = await _productRepo.GetAllAsync();
 
             /* return Ok(pro.Select(product => new ProductDto
@@ -50,9 +53,11 @@ namespace Ecommerce.Controllers
                  ProductType = product.ProductType.Name,
                  ProductBrand = product.ProductBrand.Name
              }).ToList());
-            */ 
+            */
             //replace above with mapper  
-            return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(pro));
+            //  return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(pro));
+            var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(pro);
+            return Ok(new Pagination<ProductDto>(productParams.PageIndex, productParams.PageSize, totalItems, data));
         }
         [HttpGet("{Id}")]//api/product/1
         public async Task<IActionResult> GetProduct(int Id)
