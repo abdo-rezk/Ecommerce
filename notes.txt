@@ -1,0 +1,14 @@
+Add-Migration InitialIdentity -Context AppIdentityDbContext -OutputDir Identity/Migrations
+
+
+===================== to store the cart in redis
+-redis is a package and install it in infrastrucure
+
+===================== for identity
+-Microsoft.AspNetCore.Identity in infrastrucure
+-microsoft.IdentityModel.Tokens in infrastrucure
+-system.IdentityModel.Tokens.Jwt in infrastrucure
+
+-Microsoft.AspNetCore.Authentication.JwtBearer in main project ECommerce
+
+-Microsoft.AspNetCore.Identity.EntityFramworkCore  is a package install it in core

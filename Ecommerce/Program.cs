@@ -1,7 +1,11 @@
 
+using Core.Identity;
 using Core.Interfaces;
 using Infrastrucure.Data;
+using Infrastrucure.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 namespace Ecommerce
 {
@@ -19,13 +23,29 @@ namespace Ecommerce
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<StoreContext>(options => {
-                options.UseSqlite(builder.Configuration.GetConnectionString("constr"));
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddDbContext<AppIdentityDBContext>(options => {
+                options.UseSqlite(builder.Configuration.GetConnectionString("IdentityConnection"));
+            });
+            builder.Services.AddIdentityCore<AppUser>(opt =>
+            {
+              //  opt.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<AppIdentityDBContext>()
+              .AddSignInManager<SignInManager<AppUser>>();
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthorization();
+
             builder.Services.AddScoped<IProductRepository,ProductRepository>();
+            builder.Services.AddScoped<IBasketRepository,BasketRepository>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            builder.Services.AddSingleton<IConnectionMultiplexer>(c =>
+            {
+                var configuration = ConfigurationOptions.Parse(builder.Configuration.GetConnectionString("Redis"), true);
+                return ConnectionMultiplexer.Connect(configuration);
+            });
             // ÚÔÇä ÊÓãÍ áÍÇÌå æÍÏå ÈÓ ÊÇßÓÓ Çá API
             builder.Services.AddCors(options =>
             {
@@ -55,14 +75,20 @@ namespace Ecommerce
 
             app.MapControllers();
 
+
+            //  ÚÔÇä ÇÍØ ÏÇÊÇ ÈÇíÏì
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
             var context = services.GetRequiredService<StoreContext>();
+            var IdentityContext = services.GetRequiredService<AppIdentityDBContext>();
+            var UserManager = services.GetRequiredService<UserManager<AppUser>>();
             var logger = services.GetRequiredService<ILogger<Program>>();
             try
             {
                 await context.Database.MigrateAsync();
+                await IdentityContext.Database.MigrateAsync();
                 await StoreContextSeed.SeedAsync(context);
+                await AppIdentityDbContextSeed.SeedUserAsync(UserManager);
             }
             catch(Exception ex)
             {
