@@ -1,7 +1,10 @@
-﻿using Core.Entities;
+﻿using AutoMapper;
+using Core.Entities;
 using Core.Interfaces;
+using Ecommerce.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static StackExchange.Redis.Role;
 
 namespace Ecommerce.Controllers
 {
@@ -10,9 +13,11 @@ namespace Ecommerce.Controllers
     public class BasketController : ControllerBase
     {
         private readonly IBasketRepository _basketRepository;
-        public BasketController(IBasketRepository basketRepository)
+        private readonly IMapper _mapper;
+        public BasketController(IBasketRepository basketRepository, IMapper mapper)
         {
-            _basketRepository = basketRepository; 
+            _basketRepository = basketRepository;
+            _mapper = mapper;
         }
         [HttpGet]
         public async Task<ActionResult<CustomerBasket>> GetBasket(string id)
@@ -30,13 +35,14 @@ namespace Ecommerce.Controllers
             return Ok(result);
         }
         [HttpPost]
-        public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasket basket)
+        public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasketDto basket)
         {
             if (basket == null || string.IsNullOrEmpty(basket.Id))
             {
                 return BadRequest("Invalid basket data.");
             }
-            var updatedBasket = await _basketRepository.UpdateBasketAsync(basket);
+            var CustomerBasket = _mapper.Map<CustomerBasketDto, CustomerBasket>(basket);
+            var updatedBasket = await _basketRepository.UpdateBasketAsync(CustomerBasket);
             if (updatedBasket == null) return NotFound();
             return Ok(updatedBasket);
         }

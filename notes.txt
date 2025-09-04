@@ -1,8 +1,58 @@
+========= Authorize  in postMan
+Authorize لو حاجه عاملها
+وعايز تعملها تست بالتوكن بتحتفظ بالتوكن اللى عمل لوجن مثلا
+key=Authorization وتروح بوست مان ف الهيدر تكتب 
+value= bearer + token
+========= Authorize  in Swagger
+add the next code to program.cs
+
+    builder.Services.AddSwaggerGen(c =>
+   {
+       c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+
+       // ✅ تعريف نوع التوكن: Bearer JWT
+       c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+       {
+           Description = "أدخل التوكن في الفورمات ده: Bearer {token}",
+           Name = "Authorization",
+           In = ParameterLocation.Header,
+           Type = SecuritySchemeType.ApiKey, // ← خليها ApiKey مش Http!
+           Scheme = "Bearer"
+       });
+
+       // ✅ تفعيل إرسال التوكن مع كل Request
+       c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+       {
+           {
+               new OpenApiSecurityScheme
+               {
+                   Reference = new OpenApiReference
+                   {
+                       Type = ReferenceType.SecurityScheme,
+                       Id = "Bearer"
+                   },
+                   In = ParameterLocation.Header
+               },
+               new string[] {}
+           }
+       });
+   });
+
+===================== generic 
+generic  reposatory is called antipattent ??why
+ يعنى مش كامل ليه
+عشان مبقدرش اعمل انكلود للنفجيشن بروبرتى اللى لو فى ليست تانى جوه مبعرفش اوصلها 
+spacefications ف بنحل المشكله دى اننا نستخدم ال 
+=====================
+
 Add-Migration InitialIdentity -Context AppIdentityDbContext -OutputDir Identity/Migrations
 
 
 ===================== to store the cart in redis
 -redis is a package and install it in infrastrucure
+docker-compose up --detach على الباث ده ونكتب اسم الملف cmd فى ملف اسمه دوكر كومبوز عليه شويه داتا بنحطه ف البروجكت بنفتح ال
+هنلاقيه حمل ف الدوكر  
+
 
 ===================== for identity
 -Microsoft.AspNetCore.Identity in infrastrucure
@@ -12,3 +62,44 @@ Add-Migration InitialIdentity -Context AppIdentityDbContext -OutputDir Identity/
 -Microsoft.AspNetCore.Authentication.JwtBearer in main project ECommerce
 
 -Microsoft.AspNetCore.Identity.EntityFramworkCore  is a package install it in core
+
+
+
+-------------------------- add migration فى نفس البوجيكت 
+cd + اسم المشروع عشان يقف عليه
+
+dotnet ef migrations add Init --context StoreContext --output-dir Data/Migrations
+--context StoreContext ده عشان لو عندى اكتر من كونتكست ف المشروع فانا بحدد اللى عايزه  
+--output-dir وممكن احدد المكان اللى ينزل فيه 
+
+//update database
+dotnet ef database update --context StoreContext
+ممكن منحطش الكونتكست 
+
+-------------------------- add migration مش ف نفس البوجيكت 
+dotnet ef migrations add Init -p ../Infrastrucure -s . -o Data/Migrations
+p يعنى هعمل الميجريشن ف المشروع ده عشان
+s دوت عشان يقف ع البروجيكت الاصلى الاستارت بروجيكت
+
+----------------------update in program file during it in running ممكن نعمل 
+قبل الرن
+using var scope = app.Services.CreateScope();
+var services = scope.ServiceProvider;
+var context = services.GetRequiredService<StoreContext>();
+var logger = services.GetRequiredService<ILogger<Program>>();
+try
+{
+    await context.Database.MigrateAsync();
+}
+catch(Exception ex)
+{
+
+    logger.LogError(ex, "Error occared while migrating process");
+}
+
+app.Run();
+
+
+--------------------------- in vs code 
+//  عشان اسيرش او افتح الداتا بيز ف السكول لايت لازم احط علامه الاكبر من دى  
+>sqlite

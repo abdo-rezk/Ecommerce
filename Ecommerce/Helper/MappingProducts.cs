@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities;
+using Core.Identity;
 using Ecommerce.DTO;
 namespace Ecommerce.Helper
 {
@@ -12,6 +13,9 @@ namespace Ecommerce.Helper
                 .ForMember(d => d.ProductBrand, o => o.MapFrom(s => s.ProductBrand.Name))
                 // to return picture name with Domain
                 .ForMember(d=>d.PictureUrl,o=>o.MapFrom<ProductUrlResolver>());
+            CreateMap<Address,AddressDto>().ReverseMap();
+            CreateMap<CustomerBasketDto, CustomerBasket>().ReverseMap();
+            CreateMap<BasketItemDto, BasketItem>().ReverseMap();
         }
     }
 }
