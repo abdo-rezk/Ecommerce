@@ -92,6 +92,8 @@ namespace Ecommerce
             //registeration
             builder.Services.AddScoped<IProductRepository,ProductRepository>();
             builder.Services.AddScoped<IBasketRepository,BasketRepository>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             //Token Service
             builder.Services.AddScoped<ITokenService, TokenService>();

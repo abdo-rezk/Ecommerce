@@ -12,14 +12,14 @@ namespace Core.Entities.OrederAggregat
         {
             
         }
-        public ProductItemOredered(int ProductItemId,string ProductNamed,string ProductUrl)
+        public ProductItemOredered(int productItemId,string productName,string pictureUrl)
         {
-            ProductItemId = ProductItemId;
-            ProductNamed = ProductNamed;
-            ProductUrl = ProductUrl;
+            ProductItemId = productItemId;
+            ProductName = productName;
+            PictureUrl = pictureUrl;
         }
         public int ProductItemId { get; set; }
-        public string ProductNamed { get; set; }
-        public string  ProductUrl { get; set; }
+        public string ProductName { get; set; }
+        public string  PictureUrl { get; set; }
     }
 }

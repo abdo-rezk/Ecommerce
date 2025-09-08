@@ -34,7 +34,7 @@ namespace Ecommerce.Controllers
         {
             return "the secret";
         }
-        [HttpPost("login")]
+        [HttpPost("login")]  //email: mo@gmail.com // pass: Abdo_2001
         public async Task<ActionResult<UserDto>> Login(LoginDto model)
         {
             var user = await _userManager.FindByEmailAsync(model.Email);

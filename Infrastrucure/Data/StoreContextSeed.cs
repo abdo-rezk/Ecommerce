@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.OrederAggregat;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,12 @@ namespace Infrastrucure.Data
                 var ProductData = File.ReadAllText("../Infrastrucure/Data/SeedData/products.json");
                 var products = JsonSerializer.Deserialize<List<Product>>(ProductData);
                 context.Products.AddRange(products);
+            }
+            if (!context.DeliveryMethods.Any())
+            {
+                var DeliveryData = File.ReadAllText("../Infrastrucure/Data/SeedData/delivery.json");
+                var Methods = JsonSerializer.Deserialize<List<DeliveryMethod>>(DeliveryData);
+                context.DeliveryMethods.AddRange(Methods);
             }
             if (!context.ProductBrands.Any())
             {

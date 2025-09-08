@@ -12,7 +12,7 @@ namespace Ecommerce.DTO
         [Range(0.1, double.MaxValue,ErrorMessage ="Price must be greter than 0")]
         public decimal Price { get; set; }
         [Required]
-        [Range(1, double.MaxValue,ErrorMessage ="Quantity must be at least 1")]
+        [Range(1, double.MaxValue,ErrorMessage ="Quantity must be at least 1")] // must make it double to take the min value
         public int Quantity { get; set; }
         [Required]
         public string PictureUrl { get; set; }

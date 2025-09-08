@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.OrederAggregat;
 using Core.Interfaces;
 using Core.Spacifications;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +47,27 @@ namespace Infrastrucure.Data
         private IQueryable<T> ApplySpecification(ISpacification<T> spac)
         {
             return SpacificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), spac);
+        }
+
+        public void Add(T entity)
+        {
+            _context.Set<T>().Add(entity);
+        }
+
+        public void Update(T entity)
+        {
+           _context.Set<T>().Attach(entity);
+           _context.Entry(entity).State = EntityState.Modified;
+        }
+
+        public void Delete(T entity)
+        {
+            _context.Set<T>().Remove(entity);
+        }
+
+        public Task<IReadOnlyList<DeliveryMethod>> ListAllAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

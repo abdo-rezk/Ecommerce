@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Controllers
@@ -8,5 +9,6 @@ namespace Ecommerce.Controllers
     // معمول عشان لو فى حاجه شيرد بين كل الكنترولرز
     public class BaseApiController : ControllerBase
     {
+       
     }
 }

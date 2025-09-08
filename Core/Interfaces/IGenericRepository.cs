@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Entities.OrederAggregat;
 using Core.Spacifications;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,9 @@ namespace Core.Interfaces
         Task<IReadOnlyList<T>> ListAsync(ISpacification<T> spac);
 
         Task<int> CountAsync(ISpacification<T> spac);
+        void Add(T entity);
+        void Update(T entity);
+        void Delete(T entity);
+        Task<IReadOnlyList<DeliveryMethod>> ListAllAsync();
     }
 }
