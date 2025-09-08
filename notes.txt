@@ -1,3 +1,16 @@
+front end repo
+https://github.com/AbanoubNabilTawfik/ecomercetest.git
+
+backend repo
+https://github.com/AbanoubNabilTawfik/fullbackend.git
+
+
+============================================stripe.com 
+ موقع الدفع عشان تشوف العمليات هتلاقيها ف الترانزاكشن
+https://dashboard.stripe.com/test/payments
+
+
+
 ========= Authorize  in postMan
 Authorize لو حاجه عاملها
 وعايز تعملها تست بالتوكن بتحتفظ بالتوكن اللى عمل لوجن مثلا
@@ -50,9 +63,13 @@ Add-Migration InitialIdentity -Context AppIdentityDbContext -OutputDir Identity/
 
 ===================== to store the cart in redis
 -redis is a package and install it in infrastrucure
-docker-compose up --detach على الباث ده ونكتب اسم الملف cmd فى ملف اسمه دوكر كومبوز عليه شويه داتا بنحطه ف البروجكت بنفتح ال
+(docker-compose)<--على الباث ده ونكتب اسم الملف cmd فى ملف اسمه دوكر كومبوز عليه شويه داتا بنحطه ف البروجكت بنفتح ال
+docker-compose up --detach 
 هنلاقيه حمل ف الدوكر  
 
+بتدخل عليه عشان نشغل ال redis 
+user: root 
+pass: secret
 
 ===================== for identity
 -Microsoft.AspNetCore.Identity in infrastrucure
@@ -66,9 +83,9 @@ docker-compose up --detach على الباث ده ونكتب اسم الملف c
 
 
 -------------------------- add migration فى نفس البوجيكت 
-cd + اسم المشروع عشان يقف عليه
+cd +  باث اسم المشروع الرئيسى عشان يقف عليه الملف اللى فيه الكونفج 
 
-dotnet ef migrations add Init --context StoreContext --output-dir Data/Migrations
+dotnet ef migrations add Init -p ../Infrastrucure --context StoreContext --output-dir Data/Migrations
 --context StoreContext ده عشان لو عندى اكتر من كونتكست ف المشروع فانا بحدد اللى عايزه  
 --output-dir وممكن احدد المكان اللى ينزل فيه 
 

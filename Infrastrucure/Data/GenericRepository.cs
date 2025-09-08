@@ -23,7 +23,7 @@ namespace Infrastrucure.Data
             return await _context.Set<T>().FindAsync(id);
         }
 
-        public async Task<IReadOnlyCollection<T>> GetAllAsync()
+        public async Task<IReadOnlyList<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }
@@ -63,11 +63,6 @@ namespace Infrastrucure.Data
         public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-        }
-
-        public Task<IReadOnlyList<DeliveryMethod>> ListAllAsync()
-        {
-            throw new NotImplementedException();
         }
     }
 }

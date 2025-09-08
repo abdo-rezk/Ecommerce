@@ -14,9 +14,9 @@ namespace Ecommerce.Helper
         }
         public string Resolve(OrderItem source, OrderItemDto destination, string destMember, ResolutionContext context)
         {
-            if (!string.IsNullOrEmpty(source.ItemOredered.PictureUrl))
+            if (!string.IsNullOrEmpty(source.ItemOredered.ProductUrl)) //pic Url not product
             {
-                return _config["ApiUrl"] + source.ItemOredered.PictureUrl;
+                return _config["ApiUrl"] + source.ItemOredered.ProductUrl;//pic Url
             }
             return null;
         }

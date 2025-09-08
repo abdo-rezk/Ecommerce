@@ -51,21 +51,35 @@ namespace Infrastrucure.Services
             var subTotal = items.Sum(i => i.Quantity * i.Price);
 
             //create order 
-            var order = new Order(items, buyerEmail,shippingAddess, dlvMethod,  subTotal);
-            _unitOfWork.Repository<Order>().Add(order);
+            var spac = new OrderByPaymentIntentIdSpacefication(basket.PaymentIntentId);
+            var order = await _unitOfWork.Repository<Order>().GetEntityWithSpec(spac);
+            if (order != null)
+            {
+                order.ShipToAddress = shippingAddess;
+                order.DeliveryMethod = dlvMethod;
+                order.SubTotal = subTotal;
+                _unitOfWork.Repository<Order>().Update(order);
+            }
+            else
+            {
+                 order = new Order(items, buyerEmail, shippingAddess, dlvMethod, subTotal, basket.PaymentIntentId);
+                _unitOfWork.Repository<Order>().Add(order);
+            }
+               
+                
             //save to db
             var result=await _unitOfWork.Complete();
             if (result <= 0) return null;
 
             //delete basket
-            await _basketRepo.DeleteBasketAsync(basketId);
+            //await _basketRepo.DeleteBasketAsync(basketId);
 
             return order;
         }
 
         public async Task<IReadOnlyList<DeliveryMethod>> GetDeliveryMethodsAsync()
         {
-            return await _unitOfWork.Repository<DeliveryMethod>().ListAllAsync();
+            return await _unitOfWork.Repository<DeliveryMethod>().GetAllAsync();
         }
 
         public Task<Order> GetOrderByIdAsync(int id, string buyerEmail)

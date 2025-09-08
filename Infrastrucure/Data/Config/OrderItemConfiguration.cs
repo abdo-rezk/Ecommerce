@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastrucure.Data.Config
 {
-    internal class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
+    public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
     {
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {

@@ -16,10 +16,10 @@ namespace Core.Entities.OrederAggregat
         {
             ProductItemId = productItemId;
             ProductName = productName;
-            PictureUrl = pictureUrl;
+            ProductUrl = pictureUrl;
         }
         public int ProductItemId { get; set; }
         public string ProductName { get; set; }
-        public string  PictureUrl { get; set; }
+        public string ProductUrl { get; set; }  // pic Url
     }
 }

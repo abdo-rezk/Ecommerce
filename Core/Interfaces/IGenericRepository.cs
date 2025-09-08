@@ -12,7 +12,7 @@ namespace Core.Interfaces
     public interface IGenericRepository<T> where T : BaseEntity
     {
         Task<T> GetByIdAsync(int id);
-        Task<IReadOnlyCollection<T>> GetAllAsync();
+        Task<IReadOnlyList<T>> GetAllAsync();
 
 
         // بعمل ال specification  عشان لما بيبقى فيه  include  in generic repository  مكنش بيفهم يدخل جوا ازاى 
@@ -27,6 +27,5 @@ namespace Core.Interfaces
         void Add(T entity);
         void Update(T entity);
         void Delete(T entity);
-        Task<IReadOnlyList<DeliveryMethod>> ListAllAsync();
     }
 }

@@ -12,13 +12,14 @@ namespace Core.Entities.OrederAggregat
         {
             
         }
-        public Order(IReadOnlyList<OrderItem> orderItems, string buyerEmail, Address shipToAddress, DeliveryMethod deliveryMethod, decimal subTotal)
+        public Order(IReadOnlyList<OrderItem> orderItems, string buyerEmail, Address shipToAddress, DeliveryMethod deliveryMethod, decimal subTotal,string paymentIntentId)
         {
             OrderItems = orderItems;
             BuyerEmail = buyerEmail;
             ShipToAddress = shipToAddress;
             DeliveryMethod = deliveryMethod;
             SubTotal = subTotal;
+            PaymentIntentId = paymentIntentId;
         }
 
         public string BuyerEmail { get; set; }
@@ -28,7 +29,7 @@ namespace Core.Entities.OrederAggregat
         public IReadOnlyList<OrderItem>  OrderItems{ get; set; }
         public decimal SubTotal{ get; set; }
         public OrderStatues Statues { get; set; } = OrderStatues.Pending;
-        public string PaymentIntentId { get; set; } = "";
+        public string PaymentIntentId { get; set; } 
         public decimal GetTotal()
         {
             return SubTotal + DeliveryMethod.price;
